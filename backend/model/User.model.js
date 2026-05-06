@@ -21,9 +21,24 @@ const userSchema = new mongoose.Schema({
     enum: ["user", "admin", "superadmin"],
     default: "user",
   },
+  cart:[
+    {
+      product: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Product",
+      },
+      quantity:{
+        type:Number,
+      },
+      totalPrice:{
+        type:Number,
+      }
+    }
+  ]
 },
-  { timeStamps: true }
+  { timestamps: true }
 );
 
-export default mongoose.model("User", userSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
+export default User;
 
