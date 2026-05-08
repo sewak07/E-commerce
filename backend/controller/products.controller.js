@@ -56,3 +56,50 @@ export const postProduct = async (req, res) => {
     return res.status(500).json({ message: 'Error posting product', error });
   }
 }
+
+//update product by id
+export const updateProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { productName, brand, category, price, description, specs, stock } = req.body;
+    if (!productName || !brand || !category || !price || !description || !specs || req.files?.img1 || !stock) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+    const productImages = {
+      img1: req.files?.img1?.[0]?.path,
+      img2: req.files?.img2?.[0]?.path,
+    }
+    const updatedProduct = await Products.findByIdAndUpdate(id, {
+      productName,
+      brand,
+      category,
+      price,
+      description,
+      specs,
+      productImages,
+      stock,
+    },
+      { new: true }
+    );
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    return res.status(200).json({ message: 'Product updated successfully', product: updatedProduct });
+  } catch (error) {
+    return res.status(500).json({ message: 'Error updating product', error });
+  }
+}
+
+// delete product by id
+export const deleteProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedProduct = await Products.findByIdAndDelete(id);
+    if(!deletedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    return res.status(200).json({ message: 'Product deleted successfully', product: deletedProduct });
+  } catch (error) {
+    return res.status(500).json({ message: 'Error deleting product', error });
+  }
+}
