@@ -9,6 +9,9 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
   },
 
   password: {
@@ -21,17 +24,17 @@ const userSchema = new mongoose.Schema({
     enum: ["user", "admin", "superadmin"],
     default: "user",
   },
-  cart:[
+  cart: [
     {
       product: {
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Product",
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
       },
-      quantity:{
-        type:Number,
+      quantity: {
+        type: Number,
       },
-      totalPrice:{
-        type:Number,
+      totalPrice: {
+        type: Number,
       }
     }
   ]
