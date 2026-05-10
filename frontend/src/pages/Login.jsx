@@ -1,6 +1,6 @@
-import axios from "../api/axios.js";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import axios from "../api/axios.js";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -8,38 +8,66 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post("/auth/login", { email, password });
-      alert("Logged in successfully");
-
       const user = response.data.user;
-      if (user?.role === "admin" || user?.role === "superadmin") {
+
+      if(user?.role==="admin" || user?.role==="superadmin"){
         navigate("/admin-dashboard");
-      } else {
+      }else{
         navigate("/");
       }
-    } catch (error) {
-      console.error("Error logging in:", error);
+    } catch (err) {
+      console.error(err);
     }
-  }
+  };
+
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <input type="text"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input type="password"
-          placeholder="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
+      <div className="w-full max-w-md bg-white border border-zinc-200 rounded-2xl shadow-sm p-8">
+
+        <h1 className="text-2xl font-semibold text-zinc-900 text-center">
+          Welcome Back
+        </h1>
+        <p className="text-sm text-zinc-600 text-center mt-2">
+          Log in to your account
+        </p>
+
+        <form onSubmit={handleLogin} className="mt-6 space-y-4">
+          <input
+            type="email"
+            placeholder="Email address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-3 border border-zinc-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-3 border border-zinc-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+
+          <button
+            type="submit"
+            className="w-full py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-500 transition font-medium"
+          >
+            Login
+          </button>
+        </form>
+
+        <p className="text-sm text-center text-zinc-600 mt-6">
+          Don’t have an account?{" "}
+          <Link to="/signup" className="text-indigo-600 hover:underline">
+            Create one
+          </Link>
+        </p>
+
+      </div>
     </div>
-  )
+  );
 }
