@@ -1,38 +1,48 @@
 import jwt from "jsonwebtoken";
-import User from "../model/user.model.js";
+import User from "../model/User.model.js";
 
 export const authMiddleware = async (req, res, next) => {
   try {
-    //get token from header
     const authHeader = req.headers.authorization;
+
+    // 1. No token
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ message: "Unauthorized: No token provided" });
+      return res.status(401).json({ message: "No token provided" });
     }
 
     const token = authHeader.split(" ")[1];
 
-    //verify the token  
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    let decoded;
 
-    //find user by id
-    const user = await User.findById(decoded.id).select("-password");
-    if (!user) {
-      return res.status(401).json({ message: "Unauthorized: User not found" });
+    try {
+      // 2. JWT verification (separate try = better debugging)
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      console.log("❌ JWT VERIFY FAILED:", err.message);
+
+      return res.status(401).json({
+        message: "Invalid or expired token",
+      });
     }
 
-    //attach user to request 
-    req.user = {
-      _id: user._id,
-      role: user.role,
-      username: user.username,
-    };
+    console.log("✅ DECODED TOKEN:", decoded);
+
+    // 3. DB check
+    const user = await User.findById(decoded.id).select("-password");
+
+    if (!user) {
+      return res.status(401).json({ message: "User not found in DB" });
+    }
+
+    // 4. Attach user
+    req.user = user;
 
     next();
   } catch (error) {
-    // Token errors → 401
-    if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError") {
-      return res.status(401).json({ message: "Invalid or expired token" });
-    }
-    return res.status(500).json({ message: `Server error: ${error.message}` });
+    console.log("🔥 AUTH MIDDLEWARE ERROR:", error.message);
+
+    return res.status(500).json({
+      message: "Server error in auth middleware",
+    });
   }
-}
+};
