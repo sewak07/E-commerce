@@ -10,15 +10,23 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
       const response = await axios.post("/auth/login", { email, password });
-      const user = response.data.user;
 
-      if(user?.role==="admin" || user?.role==="superadmin"){
+      const user = response.data.user;
+      const token = response.data.token; 
+
+      localStorage.setItem("token", token);
+
+      localStorage.setItem("user", JSON.stringify(user));
+
+      if (user?.role === "admin" || user?.role === "superadmin") {
         navigate("/admin-dashboard");
-      }else{
+      } else {
         navigate("/");
       }
+
     } catch (err) {
       console.error(err);
     }

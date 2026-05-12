@@ -9,7 +9,7 @@ export default function AdminHeader() {
           to="/admin-dashboard"
           className="flex items-center gap-2 text-lg font-semibold text-zinc-800"
         >
-          <span className="bg-indigo-600 text-white px-2 py-1 rounded-md text-sm">
+          <span className="bg-indigo-600 text-white px-2 py-1 rounded-md text-sm">  
             ⚡
           </span>
           <span className="font-bold">VOLT</span>
