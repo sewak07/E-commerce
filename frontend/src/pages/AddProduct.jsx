@@ -138,8 +138,44 @@ export default function AddProduct() {
         />
 
         {/* Images */}
-        <input type="file" onChange={(e) => setImg1(e.target.files[0])} />
-        <input type="file" onChange={(e) => setImg2(e.target.files[0])} />
+        {/* Images */}
+        <div className="space-y-4">
+          <label className="block">
+            <span className="text-sm text-gray-400 mb-1 block">
+              Product Image (Primary)
+            </span>
+            <input
+              type="file"
+              onChange={(e) => setImg1(e.target.files[0])}
+              className="block w-full text-sm text-gray-400
+                 file:mr-4 file:py-2.5 file:px-5
+                 file:rounded-lg file:border-0
+                 file:text-sm file:font-medium
+                 file:bg-indigo-600 file:text-white
+                 hover:file:bg-indigo-500
+                 bg-gray-800 border border-gray-700 rounded-lg
+                 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-600 transition"
+            />
+          </label>
+
+          <label className="block">
+            <span className="text-sm text-gray-400 mb-1 block">
+              Product Image (Secondary – Optional)
+            </span>
+            <input
+              type="file"
+              onChange={(e) => setImg2(e.target.files[0])}
+              className="block w-full text-sm text-gray-400
+                 file:mr-4 file:py-2.5 file:px-5
+                 file:rounded-lg file:border-0
+                 file:text-sm file:font-medium
+                 file:bg-indigo-600 file:text-white
+                 hover:file:bg-indigo-500
+                 bg-gray-800 border border-gray-700 rounded-lg
+                 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-600 transition"
+            />
+          </label>
+        </div>
 
         <button
           type="submit"
