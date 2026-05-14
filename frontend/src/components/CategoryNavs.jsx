@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { FiShoppingCart } from "react-icons/fi";
 
 export default function CategoryNavs() {
   return (
@@ -24,9 +25,9 @@ export default function CategoryNavs() {
 
       <Link
         to="/cart"
-        className="text-lg text-zinc-600 hover:text-indigo-600 transition"
+        className="text-zinc-600 hover:text-indigo-600 transition"
       >
-        👜
+        <FiShoppingCart className="w-6 h-6" />
       </Link>
 
       <Link

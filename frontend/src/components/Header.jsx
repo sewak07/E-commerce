@@ -9,15 +9,12 @@ export default function Header() {
         {/* Logo */}
         <Link
           to="/"
-          className="flex items-center gap-2 text-lg font-semibold text-zinc-800"
+          className="flex items-center gap-1 text-xl font-semibold tracking-wide"
         >
-          <span className="bg-indigo-600 text-white px-2 py-1 rounded-md text-sm">
-            ⚡
-          </span>
-          <span className="font-bold">VOLT</span>
-          <span className="text-indigo-600 font-bold">Store.</span>
-        </Link>
-
+          <span className="text-indigo-500 text-2xl">⚡</span>
+          <span className="text-black">VOLT</span>
+          <span className="text-indigo-500">Store</span>
+        </Link> 
         <CategoryNavs />
 
       </div>
