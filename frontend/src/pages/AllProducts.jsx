@@ -1,6 +1,7 @@
 import Header from "../components/Header.jsx";
 import axios from "../api/axios.js";
 import { useEffect, useState } from "react";
+import { FiShoppingCart } from "react-icons/fi";
 
 export default function AllProducts() {
   const [products, setProducts] = useState([]);
@@ -8,7 +9,7 @@ export default function AllProducts() {
   const fetchProducts = async () => {
     try {
       const response = await axios.get("/products");
-      setProducts(response.data);
+      setProducts(response.data.products);
       console.log(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -29,40 +30,59 @@ export default function AllProducts() {
           All Products
         </h1>
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-
+        {/* Product list */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {products.map((product) => (
             <div
               key={product._id}
-              className="bg-white border border-zinc-200 rounded-2xl p-4 shadow-sm hover:shadow-md transition"
+              className="group bg-white rounded-2xl border border-zinc-200 overflow-hidden
+               shadow-sm hover:shadow-xl transition-all duration-300"
             >
-              {/* Image Placeholder */}
-              <div className="w-full h-44 bg-slate-100 rounded-xl mb-4 flex items-center justify-center text-zinc-400 text-sm">
-                Product Image
+              {/* Image section */}
+              <div className="relative bg-zinc-100 h-64 overflow-hidden">
+                <img
+                  src={product.productImages?.img1}
+                  alt={product.productName}
+                  className="w-full h-full object-cover
+                   group-hover:scale-105 transition-transform duration-500"
+                />
               </div>
 
-              <h2 className="text-base font-medium text-zinc-900 mb-1">
-                {product.productname}
-              </h2>
+              {/* Content */}
+              <div className="p-5 flex flex-col gap-2">
+                <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">
+                  {product.brand}
+                </p>
 
-              <p className="text-sm text-zinc-500 mb-3">
-                {product.brand || "No brand"}
-              </p>
+                <h3 className="text-[15px] font-semibold text-zinc-900 leading-snug line-clamp-2">
+                  {product.productName}
+                </h3>
 
-              <div className="flex items-center justify-between">
-                <span className="text-indigo-600 font-semibold">
-                  Rs {product.price}
-                </span>
+                {/* Price */}
+                <div className="mt-1">
+                  <span className="text-lg font-bold text-zinc-900">
+                    Rs. {product.price}
+                  </span>
+                </div>
 
-                <button className="px-3 py-1.5 text-sm border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition">
-                  View
+                {/* CTA */}
+                <button
+                  className="
+         mt-4 w-full flex items-center justify-center gap-2
+        py-3 text-sm font-semibold rounded-xl
+        bg-blue-600 text-white
+        hover:bg-blue-700 active:scale-[0.98]
+        transition-all  
+        "
+                >
+                  <FiShoppingCart className="w-4 h-4 text-white group-hover:scale-110 transition" />
+                  Add to Cart 
                 </button>
               </div>
             </div>
           ))}
-
         </div>
+
 
         {/* Empty state (optional but professional) */}
         {products.length === 0 && (
@@ -72,6 +92,6 @@ export default function AllProducts() {
         )}
 
       </div>
-    </div>
+    </div >
   );
 }
